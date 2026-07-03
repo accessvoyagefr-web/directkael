@@ -1,38 +1,23 @@
 import streamlit as st
 import google.generativeai as genai
 
-# --- CONFIGURATION ---
-st.set_page_config(page_title="DirectKael", page_icon="🔗")
+# 1. Configuration de la page
+st.set_page_config(page_title="LINKA", page_icon="🔗", layout="centered")
 
-# --- DESIGN ---
-st.markdown("""
-    <style>
-    .stApp { background-color: #000000; }
-    h1 { color: #39FF14; text-align: center; text-shadow: 0px 0px 15px #39FF14; }
-    div, p, label { color: #e0e0e0; }
-    .stTextArea textarea { background-color: #111111; color: #39FF14; border: 1px solid #39FF14; }
-    .stButton > button { background-color: #39FF14; color: #000000; font-weight: bold; }
-    </style>
-    """, unsafe_allow_html=True)
+# 2. En-tête avec ton logo dans le dossier 'linka'
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    # Le chemin indique bien qu'on cherche le logo DANS le dossier 'linka'
+    st.image("linka/watermarked_img_4695770333962630375.png", use_column_width=True)
 
-st.title("DIRECTKAEL")
+# 3. Message de bienvenue
+st.markdown("<h2 style='text-align: center;'>Bienvenue sur LINKA</h2>", unsafe_allow_html=True)
+st.write("Je suis là pour te trouver le lien direct vers le site web que tu recherches.")
 
-# --- CONFIGURATION IA ---
-try:
-    api_key = st.secrets["GOOGLE_API_KEY"]
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-pro')
-except:
-    st.error("Clé API non trouvée. Vérifie ton fichier secrets.toml")
-    st.stop()
+# 4. Input utilisateur
+user_input = st.text_input("Quel site cherches-tu aujourd'hui ?")
 
-# --- ZONE DE RECHERCHE ---
-description = st.text_area("Décris en détail ce que tu cherches :", height=150)
-
-if st.button("Générer les liens"):
-    if description:
-        with st.spinner("Analyse en cours..."):
-            reponse = model.generate_content(f"Trouve 3 sites web pertinents pour cette demande : {description}. Donne le nom et l'URL.")
-            st.write(reponse.text)
-    else:
-        st.warning("Écris une description d'abord.")
+if user_input:
+    # Rappel de la règle métier : uniquement des sites web
+    st.write(f"Recherche en cours pour : {user_input}...")
+    # Ici viendra ton intégration Gemini
